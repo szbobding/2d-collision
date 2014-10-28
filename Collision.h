@@ -57,7 +57,7 @@ public:
         return true;
     }
 
-    // using separating axis theorem
+    // use separating axis theorem
     static bool isOBBOverlap(const OBB& o1, const OBB& o2)
     {
         // axes vector
@@ -123,6 +123,7 @@ public:
         return c1.pivot.distanceSquared(c2.pivot) <= (c1.radius - c2.radius) * (c1.radius - c2.radius);
     }
 
+    // reference: http://www.codeproject.com/Articles/15573/D-Polygon-Collision-Detection
     // 1. find the axis perpendicular to the current edge.
     // 2. project both polygons on that axis.
     // 3. if these projections don't overlap, the polygons don't intersect.
@@ -148,7 +149,7 @@ public:
 
         for (auto i = 0u; i < numAxes; ++i)
         {
-            // c1 project to axes
+            // project c1 vertices to axis
             float min1 = FLT_MAX, max1 = -FLT_MAX, ret1;
             for (auto j = 0u; j < c1.numVerts; ++j)
             {
@@ -157,7 +158,7 @@ public:
                 max1 = max1 < ret1 ? ret1 : max1;
             }
 
-            // c2 project to axes
+            // project c2 vertices to axis
             float min2 = FLT_MAX, max2 = -FLT_MAX, ret2;
             for (auto j = 0u; j < c2.numVerts; ++j)
             {
@@ -170,7 +171,6 @@ public:
             float r1 = max1 - min1;
             float r2 = max2 - min2;
             float r = (max1 > max2 ? max1 : max2) - (min1 < min2 ? min1 : min2);
-
             if (r1 + r2 <= r)
             {
                 delete[] axes;
